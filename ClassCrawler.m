@@ -6,7 +6,7 @@ NSString *ClassHierarchyGraphVizForBundle(NSBundle *bundle);
 NSString *ClassHierarchyGraphVizForClass(Class class);
 NSString *ClassHierarchyGraphVizForEverything(void);
 
-static NSString *MakeClassTable(NSBundle *bundle, Class relativesOfClass);
+static NSString *MakeClassTable(NSString *label, NSBundle *bundle, Class relativesOfClass);
 static void CrawlClass(Class object, NSHashTable *seen, NSMutableString *str, NSBundle *bundle, BOOL force, NSUInteger *count);
 static NSString *PseudoRandomColor(const char *key, uint8_t max);
 static NSString *BundleName(NSBundle *bundle);
@@ -32,7 +32,7 @@ int main (int argc, const char * argv[])
 	NSString *string = ClassHierarchyGraphVizForBundle([NSBundle mainBundle]);
 #elif 1
 	// Superclasses and subclasses of a given class.
-	NSString *string = ClassHierarchyGraphVizForClass([NSArray class]);
+	NSString *string = ClassHierarchyGraphVizForClass([NSView class]);
 #else
 	// Everything.
 	NSString *string = ClassHierarchyGraphVizForEverything();
@@ -48,37 +48,32 @@ int main (int argc, const char * argv[])
 
 NSString *ClassHierarchyGraphVizForBundle(NSBundle *bundle)
 {
-	return MakeClassTable(bundle, Nil);
+	return MakeClassTable([NSString stringWithFormat:@"Classes in %@", BundleName(bundle)], bundle, Nil);
 }
 
 
 NSString *ClassHierarchyGraphVizForClass(Class class)
 {
-	return MakeClassTable(nil, class);
+	return MakeClassTable([NSString stringWithFormat:@"Relatives of class %s", class_getName(class)], nil, class);
 }
 
 
 NSString *ClassHierarchyGraphVizForEverything(void)
 {
-	return MakeClassTable(nil, Nil);
+	return MakeClassTable(@"All loaded classes", nil, Nil);
 }
 
 
-static NSString *MakeClassTable(NSBundle *bundle, Class relativesOfClass)
+static NSString *MakeClassTable(NSString *label, NSBundle *bundle, Class relativesOfClass)
 {
 	NSMutableString	*string = [NSMutableString string];
 	NSHashTable		*seen = NSCreateHashTable(NSNonOwnedPointerHashCallBacks, 0);
 	int				i, count;
-	NSString		*label;
 	NSUInteger		classCount = 0;
 	
 	count = objc_getClassList(NULL, 0);
 	Class classes[count];
 	count = objc_getClassList(classes, count);
-	
-	if (relativesOfClass != Nil)  label = [NSString stringWithFormat:@"Relatives of class %s", class_getName(relativesOfClass)];
-	else  if (bundle != nil)  label = [NSString stringWithFormat:@"Classes in %@", BundleName(bundle)];
-	else  label = @"All loaded classes";
 	
 	for (i = 0; i < count; i++)
 	{
