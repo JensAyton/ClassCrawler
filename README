@@ -1,0 +1,7 @@
+ClassCrawler is a command-line tool which generates a GraphViz dot file
+representing all or part of the Objective-C class hierarchy.
+
+There are no parameters; the target is hard-coded in the main() function.
+To graph more frameworks, just add them to the target and rebuild.
+
+To view, use GraphViz: http://www.pixelglow.com/graphviz/
