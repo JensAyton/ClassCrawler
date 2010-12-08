@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A30439012A2A25B0026C989 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A30438F12A2A25B0026C989 /* AppKit.framework */; };
+		1AE92D9012B0433600E42805 /* ClassCrawlerDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE92D8F12B0433600E42805 /* ClassCrawlerDriver.m */; };
 		8DD76F9A0486AA7600D96B5E /* ClassCrawler.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* ClassCrawler.m */; settings = {ATTRIBUTES = (); }; };
 		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,8 @@
 		08FB7796FE84155DC02AAC07 /* ClassCrawler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassCrawler.m; sourceTree = "<group>"; };
 		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		1A30438F12A2A25B0026C989 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		1AE92D8E12B0433300E42805 /* ClassCrawler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassCrawler.h; sourceTree = "<group>"; };
+		1AE92D8F12B0433600E42805 /* ClassCrawlerDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassCrawlerDriver.m; sourceTree = "<group>"; };
 		32A70AAB03705E1F00C91783 /* ClassCrawler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassCrawler_Prefix.pch; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* ClassCrawler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ClassCrawler; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -60,6 +63,8 @@
 			isa = PBXGroup;
 			children = (
 				32A70AAB03705E1F00C91783 /* ClassCrawler_Prefix.pch */,
+				1AE92D8F12B0433600E42805 /* ClassCrawlerDriver.m */,
+				1AE92D8E12B0433300E42805 /* ClassCrawler.h */,
 				08FB7796FE84155DC02AAC07 /* ClassCrawler.m */,
 			);
 			name = Source;
@@ -132,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DD76F9A0486AA7600D96B5E /* ClassCrawler.m in Sources */,
+				1AE92D9012B0433600E42805 /* ClassCrawlerDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
