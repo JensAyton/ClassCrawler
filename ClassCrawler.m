@@ -27,7 +27,7 @@ NSString *ClassHierarchyGraphVizForEverything(void)
 #pragma mark -
 #pragma mark Teh inner gutsingz
 
-static void CrawlClass(Class object, NSHashTable *seen, NSMutableString *str, NSBundle *bundle, BOOL force, NSUInteger *count);
+static void CrawlClass(Class object, NSMutableSet *seen, NSMutableString *str, NSBundle *bundle, BOOL force, NSUInteger *count);
 static NSString *PseudoRandomColor(const char *key, uint8_t max);
 static BOOL IsSubclass(Class class, Class superclassCandidate);
 
@@ -35,7 +35,7 @@ static BOOL IsSubclass(Class class, Class superclassCandidate);
 static NSString *MakeClassTable(NSString *label, NSBundle *bundle, Class relativesOfClass)
 {
 	NSMutableString	*string = [NSMutableString string];
-	NSHashTable		*seen = NSCreateHashTable(NSNonOwnedPointerHashCallBacks, 0);
+	NSMutableSet	*seen = [NSMutableSet new];
 	int				i, count;
 	NSUInteger		classCount = 0;
 	
@@ -50,16 +50,18 @@ static NSString *MakeClassTable(NSString *label, NSBundle *bundle, Class relativ
 		CrawlClass(classes[i], seen, string, bundle, NO, &classCount);
 	}
 	
-	NSString *result = [NSString stringWithFormat:@"digraph classCrawl\n{\n\tgraph[rankdir=LR label=\"%@ (%lu classes)\"]\n\tnode [fontname=Helvetica shape=box]\n\t\n%@}\n", label, classCount, string];
+	NSString *result = [NSString stringWithFormat:@"digraph classCrawl\n{\n\tgraph[rankdir=LR label=\"%@ (%lu classes)\"]\n\tnode [fontname=Helvetica shape=box]\n\t\n%@}\n", label, (unsigned long)classCount, string];
 	
 	return result;
 }
 
 
-static void CrawlClass(Class class, NSHashTable *seen, NSMutableString *str, NSBundle *bundle, BOOL force, NSUInteger *count)
+static void CrawlClass(Class class, NSMutableSet *seen, NSMutableString *str, NSBundle *bundle, BOOL force, NSUInteger *count)
 {
+	id hashKey = [NSValue valueWithPointer:(__bridge void *)class];
+
 	if (class == Nil)  return;
-	if (NSHashGet(seen, class) != nil)  return;
+	if ([seen containsObject:hashKey])  return;
 	
 	NSBundle *classBundle = [NSBundle bundleForClass:class];
 	BOOL outOfBundle = bundle != nil && ![classBundle isEqual:bundle];
@@ -67,8 +69,8 @@ static void CrawlClass(Class class, NSHashTable *seen, NSMutableString *str, NSB
 	if (outOfBundle && !force)  return;
 	
 	if (!outOfBundle)  (*count)++;
-	
-	NSHashInsertKnownAbsent(seen, class);
+
+	[seen addObject:hashKey];
 	Class superClass = class_getSuperclass(class);
 	
 	const char *className = class_getName(class);
